@@ -33,3 +33,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+/*"AspNetCore Web Api new prj oluþturuldu. Models/Student, Repo/RepoContext oluþturuldu. Db connection yapýldý. DbContext'in IoC kaydý yapýldý. Db için ilk migration alýndý*/
