@@ -21,7 +21,7 @@ namespace WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("WebApi.Models.Student", b =>
+            modelBuilder.Entity("WebApi.Models.House", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,16 +29,43 @@ namespace WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("Income")
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Houses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Location = "Manisa/Akhisar",
+                            Price = 4000m,
+                            Type = "Ege bungalov"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Location = "Ordu/Ünye",
+                            Price = 3000m,
+                            Type = "Karadeniz ahşap"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Location = "Konya/Ilgın",
+                            Price = 2000m,
+                            Type = "İçanadolu kerpiç"
+                        });
                 });
 #pragma warning restore 612, 618
         }
