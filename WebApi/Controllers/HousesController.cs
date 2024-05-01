@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
 using WebApi.Repositories;
 
 namespace WebApi.Controllers
@@ -102,17 +103,34 @@ namespace WebApi.Controllers
                     message = $"House with id: {id} could not be found."
                 });
 
-            _context.Houses.Remove(entity);
+                _context.Houses.Remove(entity);
                 _context.SaveChanges();
-            return NoContent();
+                return NoContent();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
+        [HttpPatch("{id:int}")]
+        public IActionResult PartiallyUpdateOneHouse([FromRoute(Name = "id")] int id,
+            [FromBody] JsonPatchDocument<House> housePatch)
+        {
+            try { 
+                //check entity if exists
+                var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
+                if (entity is null)
+                    return NotFound(); // 404
 
+                housePatch.ApplyTo(entity);
+                _context.SaveChanges();
+                return NoContent(); // 204
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
