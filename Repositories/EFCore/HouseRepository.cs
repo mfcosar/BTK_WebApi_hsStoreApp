@@ -22,8 +22,8 @@ namespace Repositories.EFCore
         public IQueryable<House> GetAllHouses(bool trackChanges) => 
             FindAll(trackChanges).OrderBy(h => h.Id);
 
-        public IQueryable<House> GetOneHouseById(int id, bool trackChanges) => 
-            FindByCondition(h => h.Id.Equals(id), trackChanges);
+        public House GetOneHouseById(int id, bool trackChanges) => 
+            FindByCondition(h => h.Id.Equals(id), trackChanges).SingleOrDefault();
 
         public void UpdateOneHouse(House house) => Update(house);
     }
