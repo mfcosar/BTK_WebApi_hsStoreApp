@@ -17,7 +17,7 @@ namespace Repositories.EFCore
 
         public void DeleteOneHouse(House house) => Delete(house);
 
-        public void FormOneHouse(House house) => FormOneHouse(house);
+        public void FormOneHouse(House house) => Form(house);
 
         public IQueryable<House> GetAllHouses(bool trackChanges) => 
             FindAll(trackChanges).OrderBy(h => h.Id);
