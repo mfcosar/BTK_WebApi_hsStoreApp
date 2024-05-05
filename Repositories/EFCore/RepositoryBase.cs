@@ -12,7 +12,7 @@ namespace Repositories.EFCore
     public abstract class RepositoryBase<T> : IRepositoryBase<T>
         where T : class
     {
-        protected readonly RepositoryContext _context;
+        protected readonly RepositoryContext _context; //within the subclasses like HouseRepository
 
         public RepositoryBase(RepositoryContext context)
         {
