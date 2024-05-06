@@ -27,6 +27,7 @@ namespace Presentation.Controllers
         }*/
 
         private readonly IServiceManager _serviceManager;
+        
 
         public HousesController(IServiceManager serviceManager)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using NLog;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services;
@@ -21,6 +22,11 @@ namespace WebApi.Extensions
         {
             services.AddScoped<IServiceManager, ServiceManager>();
 
+        }
+
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            services.AddSingleton<ILoggerService, LoggerManager>();
         }
     }
 }

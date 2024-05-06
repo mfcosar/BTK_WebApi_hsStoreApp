@@ -12,9 +12,9 @@ namespace Services
     {   //?? Lazy loading yapabilmek için private IHouseService alıp, newlendikten sonra public olarak erişime açılır
 
         private readonly Lazy<IHouseService> _houseService;
-        public ServiceManager(IRepositoryManager repositoryManager)
+        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService logger)
         {
-            _houseService = new Lazy<IHouseService>(() => new HouseManager(repositoryManager));
+            _houseService = new Lazy<IHouseService>(() => new HouseManager(repositoryManager, logger));
         }
         public IHouseService HouseService => _houseService.Value; //controller buraya erişebilsin
     }
