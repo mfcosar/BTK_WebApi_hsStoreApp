@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.Exceptions;
+using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
 using System;
@@ -35,9 +36,10 @@ namespace Services
             //check entity
             var entity = _manager.HouseRepo.GetOneHouseById(id, trackChanges);
             if (entity is null) {
-                string message = $"House with id : {id} could not be found";
+                /*string message = $"House with id : {id} could not be found";
                 _loggerService.LogInfo(message);
-                throw new Exception(message);
+                throw new Exception(message);*/
+                throw new HouseNotFoundException(id);
             }
             _manager.HouseRepo.DeleteOneHouse(entity);
             _manager.Save();
@@ -50,7 +52,11 @@ namespace Services
 
         public House GetOneHouseById(int id, bool trackChanges)
         {
-            return _manager.HouseRepo.GetOneHouseById(id, trackChanges);
+            var house = _manager.HouseRepo.GetOneHouseById(id, trackChanges);
+
+            if (house is null)
+                throw new HouseNotFoundException(id);
+            return house;
         }
 
         public void UpdateOneHouse(int id, House house, bool trackChanges)
@@ -58,9 +64,10 @@ namespace Services
             //check entity
             var entity = _manager.HouseRepo.GetOneHouseById(id, trackChanges);
             if (entity is null) {
-                string message = $"House with id : {id} could not be found";
+                /*string message = $"House with id : {id} could not be found";
                 _loggerService.LogInfo(message);
-                throw new Exception(message);
+                throw new Exception(message);*/
+                throw new HouseNotFoundException(id);
             }
 
             //check params

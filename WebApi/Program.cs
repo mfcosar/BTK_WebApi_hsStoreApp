@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NLog;
 using Repositories.EFCore;
+using Services.Contracts;
 using WebApi.Extensions;
 
 
@@ -24,12 +25,22 @@ builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
 
+//app oluþturlduktan sonra servise ihtiyaç olursa ne yapýlmalý?
+var logger = app.Services.GetRequiredService<ILoggerService>();
+app.ConfigureExceptionHandler(logger);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+if (app.Environment.IsProduction())
+{
+    app.UseHsts();
+}
+
 
 app.UseHttpsRedirection();
 
