@@ -1,4 +1,6 @@
-﻿using Entities.Exceptions;
+﻿using AutoMapper;
+using Entities.DataTransferObjects;
+using Entities.Exceptions;
 using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -14,11 +16,13 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _loggerService;
+        private readonly IMapper _mapper;
 
-        public HouseManager(IRepositoryManager manager, ILoggerService loggerService)
+        public HouseManager(IRepositoryManager manager, ILoggerService loggerService, IMapper mapper)
         {
             _manager = manager;
             _loggerService = loggerService;
+            _mapper = mapper;
         }
 
         public House FormOneHouse(House house)
@@ -59,7 +63,7 @@ namespace Services
             return house;
         }
 
-        public void UpdateOneHouse(int id, House house, bool trackChanges)
+        public void UpdateOneHouse(int id, HouseDtoForUpdate houseDto, bool trackChanges)
         {
             //check entity
             var entity = _manager.HouseRepo.GetOneHouseById(id, trackChanges);
@@ -71,15 +75,18 @@ namespace Services
             }
 
             //check params
-            if (house is null)
-                throw new ArgumentNullException(nameof(house));
+            if (houseDto is null)
+                throw new ArgumentNullException(nameof(houseDto));
 
-            entity.Type = house.Type;
+            //mapping
+            entity = _mapper.Map<House>(houseDto);
+            /*entity.Type = house.Type;
             entity.Price = house.Price;
-            entity.Location = house.Location;
+            entity.Location = house.Location;*/
 
             //_manager.HouseRepo.UpdateOneHouse(entity);
-            _manager.HouseRepo.Update(entity); // hocanın impl.
+            //if (trackChanges is false) 
+                _manager.HouseRepo.Update(entity); // hocanın impl.
             _manager.Save();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.DataTransferObjects;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Services.Contracts
         IEnumerable<House> GetAllHouses(bool trackChanges);
         House GetOneHouseById(int id, bool trackChanges);
         House FormOneHouse(House house);
-        void UpdateOneHouse(int id, House house, bool trackChanges);
+        void UpdateOneHouse(int id, HouseDtoForUpdate houseDto, bool trackChanges);
         void DeleteOneHouse(int id, bool trackChanges);
 
 

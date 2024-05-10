@@ -1,4 +1,5 @@
-﻿using Repositories.Contracts;
+﻿using AutoMapper;
+using Repositories.Contracts;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace Services
     {   //?? Lazy loading yapabilmek için private IHouseService alıp, newlendikten sonra public olarak erişime açılır
 
         private readonly Lazy<IHouseService> _houseService;
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService logger)
+        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService logger, IMapper mapper)
         {
-            _houseService = new Lazy<IHouseService>(() => new HouseManager(repositoryManager, logger));
+            _houseService = new Lazy<IHouseService>(() => new HouseManager(repositoryManager, logger, mapper));
         }
         public IHouseService HouseService => _houseService.Value; //controller buraya erişebilsin
     }

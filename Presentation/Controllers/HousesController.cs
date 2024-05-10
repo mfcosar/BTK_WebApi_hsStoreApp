@@ -1,4 +1,5 @@
-﻿using Entities.Exceptions;
+﻿using Entities.DataTransferObjects;
+using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -71,15 +72,15 @@ namespace Presentation.Controllers
                 return StatusCode(201, house);
         }
         [HttpPut("{id:int}")]
-        public IActionResult UpdateOneHouse([FromRoute(Name = "id")] int id, [FromBody] House house)
+        public IActionResult UpdateOneHouse([FromRoute(Name = "id")] int id, [FromBody] HouseDtoForUpdate houseDto)
         {
-                if (house is null)
+                if (houseDto is null)
                     return BadRequest(); //400
 
                 //check new home
                 //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
                 //var entity = _manager.HouseRepo.GetOneHouseById(id, true);
-                _serviceManager.HouseService.UpdateOneHouse(id, house, true);
+                _serviceManager.HouseService.UpdateOneHouse(id, houseDto, true);
 
 
                 //house.Id = entity.Id; - takip ediliyor EFCore'da
@@ -124,7 +125,7 @@ namespace Presentation.Controllers
                 housePatch.ApplyTo(entity);
                 //_context.SaveChanges();
                 //_manager.HouseRepo.Update(entity);
-                _serviceManager.HouseService.UpdateOneHouse(id, entity, true);
+                _serviceManager.HouseService.UpdateOneHouse(id, new HouseDtoForUpdate(entity.Id, entity.Type, entity.Price, entity.Location), true);
                 //_manager.Save();
                 return NoContent(); // 204
             }
