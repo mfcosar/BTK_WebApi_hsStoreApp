@@ -6,14 +6,5 @@ using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    public record HouseDtoForUpdate(int Id, string Type, decimal Price, string Location)
-    {
-        /*public int Id { get; init; }
-        public string Type { get; init; }
-        public decimal Price { get; init;  }
-        public string Location { get; init; }*/
-
-
-
-    }
+    public record HouseDtoForUpdate(int Id, String Type, decimal Price, String Location);
 }

@@ -49,9 +49,11 @@ namespace Services
             _manager.Save();
         }
 
-        public IEnumerable<House> GetAllHouses(bool trackChanges)
+        public IEnumerable<HouseDto> GetAllHouses(bool trackChanges)
         {
-            return _manager.HouseRepo.GetAllHouses(trackChanges);
+            var houses = _manager.HouseRepo.GetAllHouses(trackChanges);
+
+            return _mapper.Map<IEnumerable<HouseDto>>(houses); // houses : source, HouseDto : destination, MappingProfile'a eklenir
         }
 
         public House GetOneHouseById(int id, bool trackChanges)
@@ -89,5 +91,7 @@ namespace Services
                 _manager.HouseRepo.Update(entity); // hocanın impl.
             _manager.Save();
         }
+
+       
     }
 }

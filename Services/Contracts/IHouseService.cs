@@ -10,7 +10,8 @@ namespace Services.Contracts
 {
     public interface IHouseService
     {
-        IEnumerable<House> GetAllHouses(bool trackChanges);
+        //IEnumerable<House> GetAllHouses(bool trackChanges);
+        IEnumerable<HouseDto> GetAllHouses(bool trackChanges);
         House GetOneHouseById(int id, bool trackChanges);
         House FormOneHouse(House house);
         void UpdateOneHouse(int id, HouseDtoForUpdate houseDto, bool trackChanges);

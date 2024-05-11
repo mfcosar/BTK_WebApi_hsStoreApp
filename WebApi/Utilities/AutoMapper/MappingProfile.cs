@@ -9,6 +9,7 @@ namespace WebApi.Utilities.AutoMapper
         public MappingProfile()
         {
             CreateMap<HouseDtoForUpdate, House>();
+            CreateMap<House, HouseDto>(); // source, destination
         }
         
 

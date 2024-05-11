@@ -65,3 +65,42 @@
 2024-05-11 01:45:29.0024 Info Message Template Auto Format enabled
 2024-05-11 01:45:29.3037 Info Adding target FileTarget(Name=logfile)
 2024-05-11 01:45:29.4043 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 12:44:17.4536 Info Message Template Auto Format enabled
+2024-05-11 12:44:18.0865 Info Adding target FileTarget(Name=logfile)
+2024-05-11 12:44:18.2427 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 12:55:08.3281 Info Message Template Auto Format enabled
+2024-05-11 12:55:08.7008 Info Adding target FileTarget(Name=logfile)
+2024-05-11 12:55:08.8024 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 12:56:43.3326 Info Message Template Auto Format enabled
+2024-05-11 12:56:43.7814 Info Adding target FileTarget(Name=logfile)
+2024-05-11 12:56:43.8929 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:04:33.1458 Info Message Template Auto Format enabled
+2024-05-11 13:04:33.4872 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:04:33.5831 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:19:15.8746 Info Message Template Auto Format enabled
+2024-05-11 13:19:16.2141 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:19:16.3064 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:22:53.6118 Info Message Template Auto Format enabled
+2024-05-11 13:22:54.1535 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:22:54.2730 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:27:41.9238 Info Message Template Auto Format enabled
+2024-05-11 13:27:42.7559 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:27:42.8524 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:32:38.2088 Info Message Template Auto Format enabled
+2024-05-11 13:32:38.5439 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:32:38.6461 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:35:35.4172 Info Message Template Auto Format enabled
+2024-05-11 13:35:35.6898 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:35:35.7961 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:39:20.1206 Info Message Template Auto Format enabled
+2024-05-11 13:39:20.4367 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:39:20.5284 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:42:11.8250 Info Message Template Auto Format enabled
+2024-05-11 13:42:12.1136 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:42:12.2066 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-11 13:43:36.2363 Info Message Template Auto Format enabled
+2024-05-11 13:43:36.6555 Info Adding target FileTarget(Name=logfile)
+2024-05-11 13:43:36.7736 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-12 01:14:30.8898 Info Message Template Auto Format enabled
+2024-05-12 01:14:31.4393 Info Adding target FileTarget(Name=logfile)
+2024-05-12 01:14:31.5814 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
