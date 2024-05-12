@@ -25,14 +25,14 @@ namespace Services
             _mapper = mapper;
         }
 
-        public House FormOneHouse(House house)
+        public HouseDto FormOneHouse(HouseDtoForInsertion houseDto)
         {
             /*if (house is null) //controller da kontrol ediliyor zaten
                 throw new ArgumentNullException(nameof(house));*/
-
-            _manager.HouseRepo.FormOneHouse(house);
+            var entity = _mapper.Map<House>(houseDto);
+            _manager.HouseRepo.FormOneHouse(entity);
             _manager.Save();
-            return house;
+            return _mapper.Map<HouseDto>(entity);
         }
 
         public void DeleteOneHouse(int id, bool trackChanges)
@@ -56,13 +56,13 @@ namespace Services
             return _mapper.Map<IEnumerable<HouseDto>>(houses); // houses : source, HouseDto : destination, MappingProfile'a eklenir
         }
 
-        public House GetOneHouseById(int id, bool trackChanges)
+        public HouseDto GetOneHouseById(int id, bool trackChanges)
         {
             var house = _manager.HouseRepo.GetOneHouseById(id, trackChanges);
 
             if (house is null)
                 throw new HouseNotFoundException(id);
-            return house;
+            return _mapper.Map<HouseDto>(house);
         }
 
         public void UpdateOneHouse(int id, HouseDtoForUpdate houseDto, bool trackChanges)
@@ -76,9 +76,9 @@ namespace Services
                 throw new HouseNotFoundException(id);
             }
 
-            //check params
-            if (houseDto is null)
-                throw new ArgumentNullException(nameof(houseDto));
+            //check params: controllerda yapıldı, no need
+            /*if (houseDto is null)
+                throw new ArgumentNullException(nameof(houseDto));*/
 
             //mapping
             entity = _mapper.Map<House>(houseDto);
@@ -88,10 +88,26 @@ namespace Services
 
             //_manager.HouseRepo.UpdateOneHouse(entity);
             //if (trackChanges is false) 
-                _manager.HouseRepo.Update(entity); // hocanın impl.
+            _manager.HouseRepo.Update(entity); // hocanın impl.
             _manager.Save();
         }
 
-       
+        public (HouseDtoForUpdate houseDtoForUpdate, House house) GetOneHouseForPatch(int id, bool trackChanges)
+        {
+            var house = _manager.HouseRepo.GetOneHouseById(id, trackChanges);
+
+            if (house is null)
+                throw new HouseNotFoundException(id);
+
+            var houseDtoForUpdate = _mapper.Map<HouseDtoForUpdate>(house);
+            return (houseDtoForUpdate, house);
+
+        }
+
+        public void SaveChangesForPatch(HouseDtoForUpdate houseDtoForUpdate, House house)
+        {
+            _mapper.Map<HouseDtoForUpdate>(house);
+            _manager.Save();
+        }
     }
 }

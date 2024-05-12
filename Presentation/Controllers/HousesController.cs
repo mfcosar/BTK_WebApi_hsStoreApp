@@ -58,16 +58,19 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult FormOneHouse([FromBody] House house)
+        public IActionResult FormOneHouse([FromBody] HouseDtoForInsertion houseDto)
         {
-                if (house is null)
+                if (houseDto is null)
                     return BadRequest();
+                if(!ModelState.IsValid)
+                    return UnprocessableEntity(ModelState);
+
 
                 //_context.Houses.Add(house);
                 //_context.SaveChanges();
                 //_manager.HouseRepo.Form(house);
                 //_manager.Save();
-                _serviceManager.HouseService.FormOneHouse(house);
+                var house = _serviceManager.HouseService.FormOneHouse(houseDto);
 
                 return StatusCode(201, house);
         }
@@ -76,11 +79,13 @@ namespace Presentation.Controllers
         {
                 if (houseDto is null)
                     return BadRequest(); //400
+                if (!ModelState.IsValid)
+                    return UnprocessableEntity(ModelState);//422
 
                 //check new home
                 //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
                 //var entity = _manager.HouseRepo.GetOneHouseById(id, true);
-                _serviceManager.HouseService.UpdateOneHouse(id, houseDto, true);
+                _serviceManager.HouseService.UpdateOneHouse(id, houseDto, false);
 
 
                 //house.Id = entity.Id; - takip ediliyor EFCore'da
@@ -113,19 +118,36 @@ namespace Presentation.Controllers
 
         [HttpPatch("{id:int}")]
         public IActionResult PartiallyUpdateOneHouse([FromRoute(Name = "id")] int id,
-            [FromBody] JsonPatchDocument<House> housePatch)
+            [FromBody] JsonPatchDocument<HouseDtoForUpdate> housePatch)
         {
-                //check entity if exists
-                //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
-                //var entity = _manager.HouseRepo.GetOneHouseById(id, true);
-                var entity = _serviceManager.HouseService.GetOneHouseById(id, true);
-                /*if (entity is null)
-                    return NotFound(); */// 404
 
-                housePatch.ApplyTo(entity);
-                //_context.SaveChanges();
-                //_manager.HouseRepo.Update(entity);
-                _serviceManager.HouseService.UpdateOneHouse(id, new HouseDtoForUpdate(entity.Id, entity.Type, entity.Price, entity.Location), true);
+            if (housePatch is null)
+                return BadRequest(); //400
+
+            var result = _serviceManager.HouseService.GetOneHouseForPatch(id, false);
+            //check entity if exists
+            //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
+            //var entity = _manager.HouseRepo.GetOneHouseById(id, true);
+            //var houseDto = _serviceManager.HouseService.GetOneHouseById(id, true);
+            /*if (entity is null)
+                return NotFound(); */// 404
+
+            housePatch.ApplyTo(result.houseDtoForUpdate, ModelState);
+            TryValidateModel(result.houseDtoForUpdate);
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
+            _serviceManager.HouseService.SaveChangesForPatch(result.houseDtoForUpdate, result.house);
+            //_context.SaveChanges();
+            //_manager.HouseRepo.Update(entity);
+            /*_serviceManager.HouseService.UpdateOneHouse(id, new HouseDtoForUpdate()
+            {
+                Id = houseDto.Id,
+                Type = houseDto.Type,
+                Price = houseDto.Price,
+                Location = houseDto.Location
+            }, true);*/
+
                 //_manager.Save();
                 return NoContent(); // 204
             }

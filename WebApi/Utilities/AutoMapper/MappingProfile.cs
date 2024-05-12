@@ -8,8 +8,9 @@ namespace WebApi.Utilities.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<HouseDtoForUpdate, House>();
+            CreateMap<HouseDtoForUpdate, House>().ReverseMap();
             CreateMap<House, HouseDto>(); // source, destination
+            CreateMap<HouseDtoForInsertion, House>();
         }
         
 

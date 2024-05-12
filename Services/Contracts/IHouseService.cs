@@ -12,10 +12,13 @@ namespace Services.Contracts
     {
         //IEnumerable<House> GetAllHouses(bool trackChanges);
         IEnumerable<HouseDto> GetAllHouses(bool trackChanges);
-        House GetOneHouseById(int id, bool trackChanges);
-        House FormOneHouse(House house);
+        HouseDto GetOneHouseById(int id, bool trackChanges);
+        HouseDto FormOneHouse(HouseDtoForInsertion house);
         void UpdateOneHouse(int id, HouseDtoForUpdate houseDto, bool trackChanges);
         void DeleteOneHouse(int id, bool trackChanges);
+        (HouseDtoForUpdate houseDtoForUpdate, House house) GetOneHouseForPatch(int id, bool trackChanges);
+
+        void SaveChangesForPatch(HouseDtoForUpdate houseDtoForUpdate, House house);
 
 
 
