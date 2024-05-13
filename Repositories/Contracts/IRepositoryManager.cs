@@ -9,7 +9,7 @@ namespace Repositories.Contracts
     public interface IRepositoryManager
     {
         IHouseRepository HouseRepo { get; }
-        void Save();
+        Task  SaveAsync(); //void
 
     }
 }

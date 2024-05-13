@@ -9,8 +9,8 @@ namespace Repositories.Contracts
 {
     public interface IHouseRepository: IRepositoryBase<House>
     {
-        IQueryable<House> GetAllHouses(bool trackChanges);
-        House GetOneHouseById(int id, bool trackChanges);
+        Task<IEnumerable<House>> GetAllHousesAsync(bool trackChanges);
+        Task<House> GetOneHouseByIdAsync(int id, bool trackChanges);
         void FormOneHouse(House house);
         void UpdateOneHouse(House house);
         void DeleteOneHouse(House house);

@@ -35,22 +35,22 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllHouses()
+        public async Task<IActionResult> GetAllHousesAsync()
         {
                 //var students = _context.Houses.ToList();
                 //var students = _manager.HouseRepo.GetAllHouses(false);
-                var houses = _serviceManager.HouseService.GetAllHouses(false);
+                var houses = await _serviceManager.HouseService.GetAllHousesAsync(false);
                 return Ok(houses);
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOneHouse([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> GetOneHouseAsync([FromRoute(Name = "id")] int id)
         {
                 //var house = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
                 //var house = _manager.HouseRepo.GetOneHouseById(id, false);
 
                 //throw new Exception("!!!!");
-                var house = _serviceManager.HouseService.GetOneHouseById(id, false);
+                var house = await _serviceManager.HouseService.GetOneHouseByIdAsync(id, false);
 
             /*if (house is null)
                 throw new HouseNotFoundException(id);    */  
@@ -58,7 +58,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult FormOneHouse([FromBody] HouseDtoForInsertion houseDto)
+        public async Task<IActionResult> FormOneHouseAsync([FromBody] HouseDtoForInsertion houseDto)
         {
                 if (houseDto is null)
                     return BadRequest();
@@ -70,12 +70,12 @@ namespace Presentation.Controllers
                 //_context.SaveChanges();
                 //_manager.HouseRepo.Form(house);
                 //_manager.Save();
-                var house = _serviceManager.HouseService.FormOneHouse(houseDto);
+                var house = await  _serviceManager.HouseService.FormOneHouseAsync(houseDto);
 
                 return StatusCode(201, house);
         }
         [HttpPut("{id:int}")]
-        public IActionResult UpdateOneHouse([FromRoute(Name = "id")] int id, [FromBody] HouseDtoForUpdate houseDto)
+        public async Task<IActionResult> UpdateOneHouseAsync([FromRoute(Name = "id")] int id, [FromBody] HouseDtoForUpdate houseDto)
         {
                 if (houseDto is null)
                     return BadRequest(); //400
@@ -85,7 +85,7 @@ namespace Presentation.Controllers
                 //check new home
                 //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
                 //var entity = _manager.HouseRepo.GetOneHouseById(id, true);
-                _serviceManager.HouseService.UpdateOneHouse(id, houseDto, false);
+                await _serviceManager.HouseService.UpdateOneHouseAsync(id, houseDto, false);
 
 
                 //house.Id = entity.Id; - takip ediliyor EFCore'da
@@ -95,7 +95,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteOneHouse([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> DeleteOneHouseAsync([FromRoute(Name = "id")] int id)
         {
                 //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
                 //var entity = _manager.HouseRepo.GetOneHouseById(id, false);
@@ -112,19 +112,19 @@ namespace Presentation.Controllers
                 //_context.SaveChanges();
                 //_manager.HouseRepo.DeleteOneHouse(entity);
                 //_manager.Save();
-                _serviceManager.HouseService.DeleteOneHouse(id, false);
+                await _serviceManager.HouseService.DeleteOneHouseAsync(id, false);
                 return NoContent();
         }
 
         [HttpPatch("{id:int}")]
-        public IActionResult PartiallyUpdateOneHouse([FromRoute(Name = "id")] int id,
+        public async Task<IActionResult> PartiallyUpdateOneHouseAsync([FromRoute(Name = "id")] int id,
             [FromBody] JsonPatchDocument<HouseDtoForUpdate> housePatch)
         {
 
             if (housePatch is null)
                 return BadRequest(); //400
 
-            var result = _serviceManager.HouseService.GetOneHouseForPatch(id, false);
+            var result = await _serviceManager.HouseService.GetOneHouseForPatchAsync(id, false);
             //check entity if exists
             //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();
             //var entity = _manager.HouseRepo.GetOneHouseById(id, true);
@@ -137,7 +137,7 @@ namespace Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            _serviceManager.HouseService.SaveChangesForPatch(result.houseDtoForUpdate, result.house);
+            await _serviceManager.HouseService.SaveChangesForPatchAsync(result.houseDtoForUpdate, result.house);
             //_context.SaveChanges();
             //_manager.HouseRepo.Update(entity);
             /*_serviceManager.HouseService.UpdateOneHouse(id, new HouseDtoForUpdate()

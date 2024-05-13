@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,11 @@ namespace Repositories.EFCore
 
         public void FormOneHouse(House house) => Form(house);
 
-        public IQueryable<House> GetAllHouses(bool trackChanges) => 
-            FindAll(trackChanges).OrderBy(h => h.Id);
+        public async Task<IEnumerable<House>> GetAllHousesAsync(bool trackChanges) => 
+            await FindAll(trackChanges).OrderBy(h => h.Id).ToListAsync();
 
-        public House GetOneHouseById(int id, bool trackChanges) => 
-            FindByCondition(h => h.Id.Equals(id), trackChanges).SingleOrDefault();
+        public async Task<House> GetOneHouseByIdAsync(int id, bool trackChanges) => 
+            await FindByCondition(h => h.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
 
         public void UpdateOneHouse(House house) => Update(house);
     }

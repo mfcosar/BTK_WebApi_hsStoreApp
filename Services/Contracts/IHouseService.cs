@@ -11,14 +11,14 @@ namespace Services.Contracts
     public interface IHouseService
     {
         //IEnumerable<House> GetAllHouses(bool trackChanges);
-        IEnumerable<HouseDto> GetAllHouses(bool trackChanges);
-        HouseDto GetOneHouseById(int id, bool trackChanges);
-        HouseDto FormOneHouse(HouseDtoForInsertion house);
-        void UpdateOneHouse(int id, HouseDtoForUpdate houseDto, bool trackChanges);
-        void DeleteOneHouse(int id, bool trackChanges);
-        (HouseDtoForUpdate houseDtoForUpdate, House house) GetOneHouseForPatch(int id, bool trackChanges);
+        Task<IEnumerable<HouseDto>> GetAllHousesAsync(bool trackChanges);
+        Task<HouseDto> GetOneHouseByIdAsync(int id, bool trackChanges);
+        Task<HouseDto> FormOneHouseAsync(HouseDtoForInsertion house);
+        Task UpdateOneHouseAsync(int id, HouseDtoForUpdate houseDto, bool trackChanges);
+        Task DeleteOneHouseAsync(int id, bool trackChanges);
+        Task<(HouseDtoForUpdate houseDtoForUpdate, House house)> GetOneHouseForPatchAsync(int id, bool trackChanges);
 
-        void SaveChangesForPatch(HouseDtoForUpdate houseDtoForUpdate, House house);
+        Task SaveChangesForPatchAsync(HouseDtoForUpdate houseDtoForUpdate, House house);
 
 
 

@@ -132,3 +132,8 @@
 2024-05-13 00:22:32.2971 Info Message Template Auto Format enabled
 2024-05-13 00:22:32.6639 Info Adding target FileTarget(Name=logfile)
 2024-05-13 00:22:32.8576 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-14 01:35:44.1456 Info Message Template Auto Format enabled
+2024-05-14 01:35:44.8060 Info Adding target FileTarget(Name=logfile)
+2024-05-14 01:35:44.8618 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\hsStoreApp\WebApi\nlog.config
+2024-05-14 01:42:37.9570 Info AppDomain Shutting down. LogFactory closing...
+2024-05-14 01:42:37.9830 Info LogFactory has been closed.
