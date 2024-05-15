@@ -3,6 +3,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+    [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/houses")]
     public class HousesController : ControllerBase
@@ -57,13 +59,15 @@ namespace Presentation.Controllers
             return Ok(house);
         }
 
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost]
         public async Task<IActionResult> FormOneHouseAsync([FromBody] HouseDtoForInsertion houseDto)
         {
-                if (houseDto is null)
+                /*Validation filter ile impl.edildi
+                 * if (houseDto is null)
                     return BadRequest();
                 if(!ModelState.IsValid)
-                    return UnprocessableEntity(ModelState);
+                    return UnprocessableEntity(ModelState);*/
 
 
                 //_context.Houses.Add(house);
@@ -74,13 +78,16 @@ namespace Presentation.Controllers
 
                 return StatusCode(201, house);
         }
+
+        //[ServiceFilter(typeof(LogFilterAttribute), Order =2)]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateOneHouseAsync([FromRoute(Name = "id")] int id, [FromBody] HouseDtoForUpdate houseDto)
         {
-                if (houseDto is null)
+                /*if (houseDto is null)
                     return BadRequest(); //400
                 if (!ModelState.IsValid)
-                    return UnprocessableEntity(ModelState);//422
+                    return UnprocessableEntity(ModelState);*///422
 
                 //check new home
                 //var entity = _context.Houses.Where(h => h.Id.Equals(id)).SingleOrDefault();

@@ -2,6 +2,7 @@
 using Entities.DataTransferObjects;
 using Entities.Exceptions;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Repositories.Contracts;
 using Services.Contracts;
 using System;
@@ -37,14 +38,7 @@ namespace Services
 
         public async Task DeleteOneHouseAsync(int id, bool trackChanges)
         {
-            //check entity
-            var entity = await _manager.HouseRepo.GetOneHouseByIdAsync(id, trackChanges);
-            if (entity is null) {
-                /*string message = $"House with id : {id} could not be found";
-                _loggerService.LogInfo(message);
-                throw new Exception(message);*/
-                throw new HouseNotFoundException(id);
-            }
+            var entity = await GetOneHouseByIdAndCheckExists(id, trackChanges);
             _manager.HouseRepo.DeleteOneHouse(entity);
             await _manager.SaveAsync();
         }
@@ -58,23 +52,17 @@ namespace Services
 
         public async Task<HouseDto> GetOneHouseByIdAsync(int id, bool trackChanges)
         {
-            var house = await _manager.HouseRepo.GetOneHouseByIdAsync(id, trackChanges);
+            var house = await GetOneHouseByIdAndCheckExists(id, trackChanges);
 
-            if (house is null)
-                throw new HouseNotFoundException(id);
+            /*if (house is null)
+                throw new HouseNotFoundException(id);*/
             return _mapper.Map<HouseDto>(house);
         }
 
         public async Task UpdateOneHouseAsync(int id, HouseDtoForUpdate houseDto, bool trackChanges)
         {
             //check entity
-            var entity = await _manager.HouseRepo.GetOneHouseByIdAsync(id, trackChanges);
-            if (entity is null) {
-                /*string message = $"House with id : {id} could not be found";
-                _loggerService.LogInfo(message);
-                throw new Exception(message);*/
-                throw new HouseNotFoundException(id);
-            }
+            var entity = await GetOneHouseByIdAndCheckExists(id, trackChanges);
 
             //check params: controllerda yapıldı, no need
             /*if (houseDto is null)
@@ -94,11 +82,7 @@ namespace Services
 
         public async Task<(HouseDtoForUpdate houseDtoForUpdate, House house)> GetOneHouseForPatchAsync(int id, bool trackChanges)
         {
-            var house = await _manager.HouseRepo.GetOneHouseByIdAsync(id, trackChanges);
-
-            if (house is null)
-                throw new HouseNotFoundException(id);
-
+            var house = await GetOneHouseByIdAndCheckExists(id, trackChanges);
             var houseDtoForUpdate = _mapper.Map<HouseDtoForUpdate>(house);
             return (houseDtoForUpdate, house);
 
@@ -108,6 +92,17 @@ namespace Services
         {
             _mapper.Map<HouseDtoForUpdate>(house);
             await _manager.SaveAsync();
+        }
+
+        private async Task<House> GetOneHouseByIdAndCheckExists(int id, bool trackChanges)
+        {
+            //check entity
+            var entity = await _manager.HouseRepo.GetOneHouseByIdAsync(id, trackChanges);
+            if (entity is null)
+            {
+                throw new HouseNotFoundException(id);
+            }
+            return entity;
         }
     }
 }
