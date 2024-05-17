@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.EFCore
 {
-    public class HouseRepository : RepositoryBase<House>, IHouseRepository
+    public sealed class HouseRepository : RepositoryBase<House>, IHouseRepository
     {
         public HouseRepository(RepositoryContext context): base(context)
         {
@@ -28,7 +28,10 @@ namespace Repositories.EFCore
             .Skip((houseParameters.PageNumber-1)*houseParameters.PageSize)
             .Take(houseParameters.PageSize)
             .ToListAsync();*/
-            var houses = await FindAll(trackChanges).OrderBy(h => h.Id).ToListAsync();
+            //var houses = await FindAll(trackChanges).OrderBy(h => h.Id).ToListAsync();
+            var houses = await FindAll(trackChanges).FilterHouses(houseParameters.MinPrice, houseParameters.MaxPrice).OrderBy(h => h.Id).ToListAsync();
+                
+                //FindByCondition(b => ((b.Price >= houseParameters.MinPrice) && (b.Price <= houseParameters.MaxPrice)), trackChanges).OrderBy(h => h.Id).ToListAsync(); ;
 
             return PagedList<House>
                 .ToPagedList(houses, houseParameters.PageNumber, houseParameters.PageSize);

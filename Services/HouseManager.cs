@@ -47,6 +47,10 @@ namespace Services
 
         public async Task<(IEnumerable<HouseDto> houses, MetaData metaData)> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges)
         {
+
+            if (!houseParameters.ValidPriceRange)
+                throw new PriceOutofRangeBadRequestException();
+
             var housesWithMetaData = await _manager.HouseRepo.GetAllHousesAsync(houseParameters, trackChanges);
 
             var housesDtoMapped = _mapper.Map<IEnumerable<HouseDto>>(housesWithMetaData); // houses : source, HouseDto : destination, MappingProfile'a eklenir
