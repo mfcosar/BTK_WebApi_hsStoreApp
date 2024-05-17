@@ -2,12 +2,14 @@
 using Entities.DataTransferObjects;
 using Entities.Exceptions;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Repositories.Contracts;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,11 +45,13 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<IEnumerable<HouseDto>> GetAllHousesAsync(bool trackChanges)
+        public async Task<(IEnumerable<HouseDto> houses, MetaData metaData)> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges)
         {
-            var houses = await _manager.HouseRepo.GetAllHousesAsync(trackChanges);
+            var housesWithMetaData = await _manager.HouseRepo.GetAllHousesAsync(houseParameters, trackChanges);
 
-            return _mapper.Map<IEnumerable<HouseDto>>(houses); // houses : source, HouseDto : destination, MappingProfile'a eklenir
+            var housesDtoMapped = _mapper.Map<IEnumerable<HouseDto>>(housesWithMetaData); // houses : source, HouseDto : destination, MappingProfile'a eklenir
+
+            return (housesDtoMapped, housesWithMetaData.MetaData);
         }
 
         public async Task<HouseDto> GetOneHouseByIdAsync(int id, bool trackChanges)

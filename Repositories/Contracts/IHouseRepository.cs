@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Entities.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Repositories.Contracts
 {
     public interface IHouseRepository: IRepositoryBase<House>
     {
-        Task<IEnumerable<House>> GetAllHousesAsync(bool trackChanges);
+        Task<PagedList<House>> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges);
         Task<House> GetOneHouseByIdAsync(int id, bool trackChanges);
         void FormOneHouse(House house);
         void UpdateOneHouse(House house);
