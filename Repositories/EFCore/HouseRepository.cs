@@ -2,6 +2,7 @@
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
+using Repositories.EFCore.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,12 @@ namespace Repositories.EFCore
             .Take(houseParameters.PageSize)
             .ToListAsync();*/
             //var houses = await FindAll(trackChanges).OrderBy(h => h.Id).ToListAsync();
-            var houses = await FindAll(trackChanges).FilterHouses(houseParameters.MinPrice, houseParameters.MaxPrice).OrderBy(h => h.Id).ToListAsync();
+
+            var houses = await FindAll(trackChanges)
+                .FilterHouses(houseParameters.MinPrice, houseParameters.MaxPrice)
+                .Search(houseParameters.SearchTerm)
+                .OrderBy(h => h.Id)
+                .ToListAsync();
                 
                 //FindByCondition(b => ((b.Price >= houseParameters.MinPrice) && (b.Price <= houseParameters.MaxPrice)), trackChanges).OrderBy(h => h.Id).ToListAsync(); ;
 
