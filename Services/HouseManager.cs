@@ -8,6 +8,7 @@ using Repositories.Contracts;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,12 +21,13 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
-
-        public HouseManager(IRepositoryManager manager, ILoggerService loggerService, IMapper mapper)
+        private readonly IDataShaper<HouseDto> _shaper;
+        public HouseManager(IRepositoryManager manager, ILoggerService loggerService, IMapper mapper, IDataShaper<HouseDto> shaper)
         {
             _manager = manager;
             _loggerService = loggerService;
             _mapper = mapper;
+            _shaper = shaper;
         }
 
         public async Task<HouseDto> FormOneHouseAsync(HouseDtoForInsertion houseDto)
@@ -45,7 +47,7 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<(IEnumerable<HouseDto> houses, MetaData metaData)> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges)
+        public async Task<(IEnumerable<ExpandoObject> houses, MetaData metaData)> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges)
         {
 
             if (!houseParameters.ValidPriceRange)
@@ -55,7 +57,9 @@ namespace Services
 
             var housesDtoMapped = _mapper.Map<IEnumerable<HouseDto>>(housesWithMetaData); // houses : source, HouseDto : destination, MappingProfile'a eklenir
 
-            return (housesDtoMapped, housesWithMetaData.MetaData);
+            var shapedData = _shaper.ShapeData(housesDtoMapped, houseParameters.Fields);
+
+            return (houses: shapedData, metaData: housesWithMetaData.MetaData);
         }
 
         public async Task<HouseDto> GetOneHouseByIdAsync(int id, bool trackChanges)

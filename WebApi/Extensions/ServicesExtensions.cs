@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Entities.DataTransferObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NLog;
 using Presentation.ActionFilters;
@@ -47,6 +48,11 @@ namespace WebApi.Extensions
                     .WithExposedHeaders("X-Pagination")
                 );
             });
+        }
+
+        public static void ConfigureDataShaper(this IServiceCollection services)
+        {
+            services.AddScoped<IDataShaper<HouseDto>, DataShaper<HouseDto>>();
         }
     }
 }
