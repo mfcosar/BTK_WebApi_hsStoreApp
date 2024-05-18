@@ -34,7 +34,7 @@ namespace Repositories.EFCore
             var houses = await FindAll(trackChanges)
                 .FilterHouses(houseParameters.MinPrice, houseParameters.MaxPrice)
                 .Search(houseParameters.SearchTerm)
-                .OrderBy(h => h.Id)
+                .Sort(houseParameters.OrderBy)      //.OrderBy(h => h.Id)
                 .ToListAsync();
                 
                 //FindByCondition(b => ((b.Price >= houseParameters.MinPrice) && (b.Price <= houseParameters.MaxPrice)), trackChanges).OrderBy(h => h.Id).ToListAsync(); ;

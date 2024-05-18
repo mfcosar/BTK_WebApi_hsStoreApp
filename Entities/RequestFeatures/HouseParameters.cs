@@ -15,6 +15,11 @@ namespace Entities.RequestFeatures
 
         public String? SearchTerm { get; set; }
 
+        public HouseParameters()
+        {
+            OrderBy = "id"; // HouseRepo'da ID'e göre sıralanıyor, default uyumlu olması için
+        }
+
 
     }
 }
