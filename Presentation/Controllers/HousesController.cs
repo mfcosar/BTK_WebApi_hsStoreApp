@@ -39,16 +39,24 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAllHousesAsync([FromQuery]HouseParameters houseParameters)
         {
+            var linkParameters = new LinkParameters()
+            {
+                HouseParameters = houseParameters,
+                HttpContext = HttpContext
+            };
                 //var students = _context.Houses.ToList();
                 //var students = _manager.HouseRepo.GetAllHouses(false);
-                var pagedResult = await _serviceManager.HouseService.GetAllHousesAsync(houseParameters, false);
+                var result = await _serviceManager.HouseService.GetAllHousesAsync(linkParameters, false);
 
             // sonuçlar paged old. için Response header'a MetaData bilgisi verilebilir, Front-end'de kullanılması için
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
-           
-            return Ok(pagedResult.houses);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
+
+            return  result.linkResponse.HasLinks ? 
+                    Ok(result.linkResponse.LinkedEntities) : 
+                    Ok(result.linkResponse.ShapedEntities);
         }
 
         [HttpGet("{id:int}")]

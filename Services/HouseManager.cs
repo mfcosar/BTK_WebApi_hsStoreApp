@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.Exceptions;
+using Entities.LinkModels;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -21,13 +22,13 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
-        private readonly IDataShaper<HouseDto> _shaper;
-        public HouseManager(IRepositoryManager manager, ILoggerService loggerService, IMapper mapper, IDataShaper<HouseDto> shaper)
+        private readonly IHouseLinks _houseLinks;
+        public HouseManager(IRepositoryManager manager, ILoggerService loggerService, IMapper mapper, IHouseLinks houseLinks)
         {
             _manager = manager;
             _loggerService = loggerService;
             _mapper = mapper;
-            _shaper = shaper;
+            _houseLinks = houseLinks;
         }
 
         public async Task<HouseDto> FormOneHouseAsync(HouseDtoForInsertion houseDto)
@@ -47,19 +48,20 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<(IEnumerable<ExpandoObject> houses, MetaData metaData)> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges)
+        public async Task<(LinkResponse linkResponse, MetaData metaData)> GetAllHousesAsync(LinkParameters linkParameters, bool trackChanges)
         {
 
-            if (!houseParameters.ValidPriceRange)
+            if (!linkParameters.HouseParameters.ValidPriceRange)
                 throw new PriceOutofRangeBadRequestException();
 
-            var housesWithMetaData = await _manager.HouseRepo.GetAllHousesAsync(houseParameters, trackChanges);
+            var housesWithMetaData = await _manager.HouseRepo.GetAllHousesAsync(linkParameters.HouseParameters, trackChanges);
 
             var housesDtoMapped = _mapper.Map<IEnumerable<HouseDto>>(housesWithMetaData); // houses : source, HouseDto : destination, MappingProfile'a eklenir
 
-            var shapedData = _shaper.ShapeData(housesDtoMapped, houseParameters.Fields);
-
-            return (houses: shapedData, metaData: housesWithMetaData.MetaData);
+            //var shapedData = _shaper.ShapeData(housesDtoMapped, linkParameters.HouseParameters.Fields);
+            var links = _houseLinks.TryGenerateLinks(housesDtoMapped, linkParameters.HouseParameters.Fields, linkParameters.HttpContext);
+            
+            return (LinkResponse: links, metaData: housesWithMetaData.MetaData);
         }
 
         public async Task<HouseDto> GetOneHouseByIdAsync(int id, bool trackChanges)

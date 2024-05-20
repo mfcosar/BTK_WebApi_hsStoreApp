@@ -17,7 +17,7 @@ namespace Entities.DataTransferObjects
 
 
         [Required(ErrorMessage = "Please enter price of house")]
-        [Range(10, 1000)] //ErrorMessage = "Please enter price of house in the range of 1000 to 100,000"
+        [Range(10, 100000)] //ErrorMessage = "Please enter price of house in the range of 1000 to 100,000"
         public decimal Price { get; init; }
 
         public String Location { get; init; }

@@ -9,7 +9,7 @@ namespace Entities.RequestFeatures
     public class HouseParameters: RequestParameters
     {
         public uint MinPrice { get; set; } 
-        public uint MaxPrice { get; set; } = 1000;
+        public uint MaxPrice { get; set; } = 100000;
 
         public bool ValidPriceRange => MinPrice <= MaxPrice;
 

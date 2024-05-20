@@ -32,7 +32,7 @@ namespace Presentation.ActionFilters
                 Controller = routeData.Values["controller"],
                 Action = routeData.Values["action"],
             };
-            if (routeData.Values.Count() >= 3)
+            if (routeData.Values.Count() >= 3) //routeData.Values.Count() >= 2  denendi, yine log alamadı
             {
                 logDetails.Id = routeData.Values["Id"];
             }
