@@ -75,7 +75,7 @@ namespace Presentation.Controllers
         }
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [HttpPost]
+        [HttpPost(Name = "FormOneHouseAsync")]
         public async Task<IActionResult> FormOneHouseAsync([FromBody] HouseDtoForInsertion houseDto)
         {
                 /*Validation filter ile impl.edildi
