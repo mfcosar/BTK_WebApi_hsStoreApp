@@ -38,7 +38,8 @@ namespace Presentation.Controllers
             _serviceManager = serviceManager;
         }
 
-        [HttpGet]
+        [HttpHead]
+        [HttpGet(Name = "GetAllHousesAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAllHousesAsync([FromQuery]HouseParameters houseParameters)
         {
@@ -172,6 +173,15 @@ namespace Presentation.Controllers
                 //_manager.Save();
                 return NoContent(); // 204
             }
+
+        [HttpOptions]
+        public IActionResult GetHousesOptions()
+        {
+            Response.Headers.Add("Allow", "GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS");
+            return Ok(); // 200
+        }
+
+
         }
     }
 
