@@ -45,6 +45,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
 builder.Services.AddCustomMediaTypes();
 builder.Services.AddScoped<IHouseLinks, HouseLinks>();
+builder.Services.ConfigureVersioning();
 
 
 var app = builder.Build();

@@ -43,6 +43,11 @@ namespace Repositories.EFCore
                 .ToPagedList(houses, houseParameters.PageNumber, houseParameters.PageSize);
         }
 
+        public async Task<List<House>> GetAllHousesAsync(bool trackChanges)
+        {
+            return await FindAll(trackChanges).OrderBy(h => h.Id).ToListAsync();
+        }
+
         public async Task<House> GetOneHouseByIdAsync(int id, bool trackChanges) => 
             await FindByCondition(h => h.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
 

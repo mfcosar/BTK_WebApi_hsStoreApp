@@ -118,5 +118,12 @@ namespace Services
             }
             return entity;
         }
+
+        public async Task<List<House>> GetAllHousesAsync(bool trackChanges)
+        {
+            var houses = await _manager.HouseRepo.GetAllHousesAsync(trackChanges);
+            return houses;
+
+        }
     }
 }

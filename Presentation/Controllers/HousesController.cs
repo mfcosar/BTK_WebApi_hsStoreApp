@@ -15,9 +15,11 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+    //[ApiVersion("1.0")]
     [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/houses")]
+    //[Route("api/{v:apiversion}/houses")]
     public class HousesController : ControllerBase
     {
         //private readonly RepositoryContext _context;

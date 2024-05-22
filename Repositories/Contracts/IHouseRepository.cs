@@ -11,11 +11,12 @@ namespace Repositories.Contracts
     public interface IHouseRepository: IRepositoryBase<House>
     {
         Task<PagedList<House>> GetAllHousesAsync(HouseParameters houseParameters, bool trackChanges);
+        
+        Task<List<House>> GetAllHousesAsync(bool trackChanges);
         Task<House> GetOneHouseByIdAsync(int id, bool trackChanges);
         void FormOneHouse(House house);
         void UpdateOneHouse(House house);
         void DeleteOneHouse(House house);
-
-
+       
     }
 }

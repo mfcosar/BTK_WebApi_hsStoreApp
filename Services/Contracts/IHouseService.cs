@@ -22,8 +22,6 @@ namespace Services.Contracts
         Task<(HouseDtoForUpdate houseDtoForUpdate, House house)> GetOneHouseForPatchAsync(int id, bool trackChanges);
 
         Task SaveChangesForPatchAsync(HouseDtoForUpdate houseDtoForUpdate, House house);
-
-
-
+        Task<List<House>> GetAllHousesAsync(bool trackChanges);
     }
 }
