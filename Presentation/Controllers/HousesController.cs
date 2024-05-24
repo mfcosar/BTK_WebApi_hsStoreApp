@@ -2,6 +2,7 @@
 using Entities.Exceptions;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
@@ -20,6 +21,8 @@ namespace Presentation.Controllers
     [ApiController]
     [Route("api/houses")]
     //[Route("api/{v:apiversion}/houses")]
+    //[ResponseCache(CacheProfileName = "5mins")]
+    //[HttpCacheExpiration(CacheLocation= CacheLocation.Public, MaxAge =80)]
     public class HousesController : ControllerBase
     {
         //private readonly RepositoryContext _context;
@@ -43,6 +46,7 @@ namespace Presentation.Controllers
         [HttpHead]
         [HttpGet(Name = "GetAllHousesAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        //[ResponseCache(Duration = 60)]  //Expiration test için yazılmıştı
         public async Task<IActionResult> GetAllHousesAsync([FromQuery]HouseParameters houseParameters)
         {
             var linkParameters = new LinkParameters()
