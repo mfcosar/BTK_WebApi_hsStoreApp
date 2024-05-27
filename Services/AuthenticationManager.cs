@@ -6,14 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Services.Contracts;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -21,42 +17,21 @@ namespace Services
     {
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager; //framework'ten geliyor
+        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
         private User? _user;
 
-        public AuthenticationManager(ILoggerService logger, IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationManager(ILoggerService logger,
+            IMapper mapper,
+            UserManager<User> userManager,
+            IConfiguration configuration)
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
         }
-        public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
-        {
-            var user = _mapper.Map<User>(userForRegistrationDto);
-
-            var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRolesAsync(user, userForRegistrationDto.Roles);
-            }
-            return result;
-        }
-
-        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthenticationDto)
-        {
-            _user = await _userManager.FindByNameAsync(userForAuthenticationDto.UserName);
-            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthenticationDto.Password));
-
-            if (!result)
-            {
-                _logger.LogWarning($"{nameof(ValidateUser)}: Authentication failed. Wrong user name or password");
-            }
-            return result;
-        }
-
 
         public async Task<TokenDto> FormToken(bool populateExp)
         {
@@ -70,7 +45,7 @@ namespace Services
             if (populateExp)
                 _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
 
-            await _userManager.UpdateAsync(_user); // değişikliğin db'e kaydedilmesi için
+            await _userManager.UpdateAsync(_user);
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return new TokenDto()
@@ -79,6 +54,38 @@ namespace Services
                 RefreshToken = refreshToken
             };
         }
+
+        public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
+        {
+            var user = _mapper.Map<User>(userForRegistrationDto);
+
+            var result = await _userManager
+                .CreateAsync(user, userForRegistrationDto.Password);
+
+            if (result.Succeeded)
+                await _userManager.AddToRolesAsync(user, userForRegistrationDto.Roles);
+            return result;
+        }
+
+        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthDto)
+        {
+            _user = await _userManager.FindByNameAsync(userForAuthDto.UserName);
+            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthDto.Password));
+            if (!result)
+            {
+                _logger.LogWarning($"{nameof(ValidateUser)} : Authentication failed. Wrong username or password.");
+            }
+            return result;
+        }
+
+        private SigningCredentials GetSignInCredentials()
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var key = Encoding.UTF8.GetBytes(jwtSettings["secretKey"]);
+            var secret = new SymmetricSecurityKey(key);
+            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
+        }
+
         private async Task<List<Claim>> GetClaims()
         {
             var claims = new List<Claim>()
@@ -96,16 +103,8 @@ namespace Services
             return claims;
         }
 
-        private SigningCredentials GetSignInCredentials()
-        {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = Encoding.UTF8.GetBytes(jwtSettings["secretKey"]);
-            var secret = new SymmetricSecurityKey(key);
-            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-        }
-
-
-        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signinCredentials, List<Claim> claims)
+        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signinCredentials,
+            List<Claim> claims)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
 
