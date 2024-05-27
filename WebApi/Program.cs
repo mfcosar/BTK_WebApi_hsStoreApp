@@ -53,6 +53,11 @@ builder.Services.ConfigureHttpCacheHeaders();
 builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
+//builder.Services.AddAuthentication(); //Extensions'da ConfigJWT'de çaðrýldýðý için kaldýrýldý
+
+
 
 
 var app = builder.Build();
@@ -80,6 +85,7 @@ app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,16 +1,13 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories.EFCore.Config;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+
 
 namespace Repositories.EFCore
 {
-    public class RepositoryContext : DbContext
+    public class RepositoryContext : IdentityDbContext<User>               //DbContext
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         {
@@ -20,7 +17,11 @@ namespace Repositories.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new HouseConfig());
+            base.OnModelCreating(modelBuilder); //ilgili tablolar, migrations oluşur
+            //modelBuilder.ApplyConfiguration(new HouseConfig());
+            //modelBuilder.ApplyConfiguration(new RoleConfiguration()); //tek tek yazmak yerine assembly üzerinden de alınabilir
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
