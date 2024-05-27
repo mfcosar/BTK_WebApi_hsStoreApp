@@ -3,6 +3,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
@@ -20,6 +21,7 @@ namespace Presentation.Controllers
     [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/houses")]
+    [ApiExplorerSettings(GroupName = "v1")]
     //[Route("api/{v:apiversion}/houses")]
     //[ResponseCache(CacheProfileName = "5mins")]
     //[HttpCacheExpiration(CacheLocation= CacheLocation.Public, MaxAge =80)]
@@ -43,6 +45,7 @@ namespace Presentation.Controllers
             _serviceManager = serviceManager;
         }
 
+        [Authorize]
         [HttpHead]
         [HttpGet(Name = "GetAllHousesAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
@@ -66,6 +69,7 @@ namespace Presentation.Controllers
                     Ok(result.linkResponse.ShapedEntities);
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOneHouseAsync([FromRoute(Name = "id")] int id)
         {
@@ -80,6 +84,7 @@ namespace Presentation.Controllers
             return Ok(house);
         }
 
+        [Authorize(Roles = "Editor, Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost(Name = "FormOneHouseAsync")]
         public async Task<IActionResult> FormOneHouseAsync([FromBody] HouseDtoForInsertion houseDto)
@@ -101,6 +106,7 @@ namespace Presentation.Controllers
         }
 
         //[ServiceFilter(typeof(LogFilterAttribute), Order =2)]
+        [Authorize(Roles = "Editor, Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateOneHouseAsync([FromRoute(Name = "id")] int id, [FromBody] HouseDtoForUpdate houseDto)
@@ -122,6 +128,7 @@ namespace Presentation.Controllers
                 return NoContent(); //204
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteOneHouseAsync([FromRoute(Name = "id")] int id)
         {
@@ -144,6 +151,7 @@ namespace Presentation.Controllers
                 return NoContent();
         }
 
+        [Authorize(Roles = "Editor, Admin")]
         [HttpPatch("{id:int}")]
         public async Task<IActionResult> PartiallyUpdateOneHouseAsync([FromRoute(Name = "id")] int id,
             [FromBody] JsonPatchDocument<HouseDtoForUpdate> housePatch)
@@ -180,6 +188,7 @@ namespace Presentation.Controllers
                 return NoContent(); // 204
             }
 
+        [Authorize]
         [HttpOptions]
         public IActionResult GetHousesOptions()
         {

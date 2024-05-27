@@ -11,6 +11,7 @@ namespace Presentation.Controllers
     //[ApiVersion("2.0", Deprecated=true)]
     [ApiController]
     [Route("api/houses")]
+    [ApiExplorerSettings(GroupName ="v2")]
     //[Route("api/{v:apiversion}/houses")]
     public class HousesV2Controller: ControllerBase
     {
