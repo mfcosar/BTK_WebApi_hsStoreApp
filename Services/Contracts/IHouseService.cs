@@ -13,7 +13,6 @@ namespace Services.Contracts
 {
     public interface IHouseService
     {
-        //IEnumerable<House> GetAllHouses(bool trackChanges);
         Task<(LinkResponse linkResponse, MetaData metaData)> GetAllHousesAsync(LinkParameters linkParameters, bool trackChanges);
         Task<HouseDto> GetOneHouseByIdAsync(int id, bool trackChanges);
         Task<HouseDto> FormOneHouseAsync(HouseDtoForInsertion house);

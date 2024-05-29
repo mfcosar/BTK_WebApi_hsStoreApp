@@ -41,13 +41,6 @@ namespace Services
             return _mapper.Map<HouseDto>(entity);
         }
 
-        public async Task DeleteOneHouseAsync(int id, bool trackChanges)
-        {
-            var entity = await GetOneHouseByIdAndCheckExists(id, trackChanges);
-            _manager.HouseRepo.DeleteOneHouse(entity);
-            await _manager.SaveAsync();
-        }
-
         public async Task<(LinkResponse linkResponse, MetaData metaData)> GetAllHousesAsync(LinkParameters linkParameters, bool trackChanges)
         {
 
@@ -108,6 +101,12 @@ namespace Services
             await _manager.SaveAsync();
         }
 
+        public async Task DeleteOneHouseAsync(int id, bool trackChanges)
+        {
+            var entity = await GetOneHouseByIdAndCheckExists(id, trackChanges);
+            _manager.HouseRepo.DeleteOneHouse(entity);
+            await _manager.SaveAsync();
+        }
         private async Task<House> GetOneHouseByIdAndCheckExists(int id, bool trackChanges)
         {
             //check entity

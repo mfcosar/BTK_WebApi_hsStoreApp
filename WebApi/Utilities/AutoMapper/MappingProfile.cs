@@ -12,6 +12,10 @@ namespace WebApi.Utilities.AutoMapper
             CreateMap<House, HouseDto>(); // source, destination
             CreateMap<HouseDtoForInsertion, House>();
             CreateMap<UserForRegistrationDto, User>();
+
+            CreateMap<CategoryDtoForUpdate, Category>().ReverseMap();
+            CreateMap<Category, CategoryDto>(); // source, destination
+            CreateMap<CategoryDtoForInsertion, Category>();
         }
         
 

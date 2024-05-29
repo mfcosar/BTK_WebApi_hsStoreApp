@@ -14,7 +14,7 @@ namespace Repositories.EFCore
 
         }
         public DbSet<House> Houses { get; set; }
-        //public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
