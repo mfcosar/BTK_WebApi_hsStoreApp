@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    public record CategoryDtoForInsertion: CategoryDto
+    public record CategoryDtoForInsertion: CategoryDtoForManipulation
     {
-        [Required(ErrorMessage = "Please enter name of Category")]
-        [MinLength(2, ErrorMessage = "Please enter name of Category min. length of 2")]
-        [MaxLength(60, ErrorMessage = "Please enter name of Category max. length of 60")]
-        public String CategoryName { get; init; }
+
     }
 }

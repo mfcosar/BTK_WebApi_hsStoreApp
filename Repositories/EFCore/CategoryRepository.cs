@@ -20,7 +20,7 @@ namespace Repositories.EFCore
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)
         {
             return await FindAll(trackChanges)
-                .OrderBy(c => c.CategoryName)
+                .OrderBy(c => c.CategoryId)
                 .ToListAsync();
         }
 

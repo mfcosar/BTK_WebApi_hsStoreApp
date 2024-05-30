@@ -44,11 +44,12 @@ namespace Services
         }
 
 
-        public async Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDto, bool trackChanges)
+        public async Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDtoForUpdate, bool trackChanges)
         {
             var entity = await GetOneCategoryByIdAndCheckExists(id, trackChanges);
-                
-                entity = _mapper.Map<Category>(categoryDto);
+
+            entity = _mapper.Map<Category>(categoryDtoForUpdate); //burda problem var.
+            entity.CategoryId = id; //eğer kullanıcı id girmezse, Id=0 kalmaması için
 
              _repositoryManager.CategoryRepo.UpdateOneCategory(entity);
             await _repositoryManager.SaveAsync();

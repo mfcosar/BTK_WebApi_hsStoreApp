@@ -31,11 +31,11 @@ namespace Services
             _houseLinks = houseLinks;
         }
 
-        public async Task<HouseDto> FormOneHouseAsync(HouseDtoForInsertion houseDto)
+        public async Task<HouseDto> FormOneHouseAsync(HouseDtoForInsertion houseDtoForInsertion)
         {
             /*if (house is null) //controller da kontrol ediliyor zaten
                 throw new ArgumentNullException(nameof(house));*/
-            var entity = _mapper.Map<House>(houseDto);
+            var entity = _mapper.Map<House>(houseDtoForInsertion);
             _manager.HouseRepo.FormOneHouse(entity);
             await _manager.SaveAsync();
             return _mapper.Map<HouseDto>(entity);
@@ -66,7 +66,7 @@ namespace Services
             return _mapper.Map<HouseDto>(house);
         }
 
-        public async Task UpdateOneHouseAsync(int id, HouseDtoForUpdate houseDto, bool trackChanges)
+        public async Task UpdateOneHouseAsync(int id, HouseDtoForUpdate houseDtoForUpdate, bool trackChanges)
         {
             //check entity
             var entity = await GetOneHouseByIdAndCheckExists(id, trackChanges);
@@ -76,7 +76,8 @@ namespace Services
                 throw new ArgumentNullException(nameof(houseDto));*/
 
             //mapping
-            entity = _mapper.Map<House>(houseDto);
+            entity = _mapper.Map<House>(houseDtoForUpdate);
+            entity.Id = id;  //eğer kullanıcı id girmezse, Id=0 kalmaması için
             /*entity.Type = house.Type;
             entity.Price = house.Price;
             entity.Location = house.Location;*/

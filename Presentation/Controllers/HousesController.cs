@@ -87,7 +87,7 @@ namespace Presentation.Controllers
         [Authorize(Roles = "Editor, Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost(Name = "FormOneHouseAsync")]
-        public async Task<IActionResult> FormOneHouseAsync([FromBody] HouseDtoForInsertion houseDto)
+        public async Task<IActionResult> FormOneHouseAsync([FromBody] HouseDtoForInsertion houseDtoForInsertion)
         {
                 /*Validation filter ile impl.edildi
                  * if (houseDto is null)
@@ -100,7 +100,7 @@ namespace Presentation.Controllers
                 //_context.SaveChanges();
                 //_manager.HouseRepo.Form(house);
                 //_manager.Save();
-                var house = await  _serviceManager.HouseService.FormOneHouseAsync(houseDto);
+                var house = await  _serviceManager.HouseService.FormOneHouseAsync(houseDtoForInsertion);
 
                 return StatusCode(201, house);
         }

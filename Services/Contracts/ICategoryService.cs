@@ -13,8 +13,8 @@ namespace Services.Contracts
         Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges);
         Task<Category> GetOneCategoryByIdAsync(int id, bool trackChanges);
         
-        Task<CategoryDto> FormOneCategoryAsync(CategoryDtoForInsertion categoryDto);
-        Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDto, bool trackChanges);
+        Task<CategoryDto> FormOneCategoryAsync(CategoryDtoForInsertion categoryDtoForInsertion);
+        Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDtoForUpdate, bool trackChanges);
         Task DeleteOneCategoryAsync(int id, bool trackChanges); 
     }
 }
