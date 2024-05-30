@@ -12,8 +12,8 @@ using Repositories.EFCore;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240529140016_AddCategoryResourceToDatabase")]
-    partial class AddCategoryResourceToDatabase
+    [Migration("20240530165329_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,6 +66,9 @@ namespace WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -79,12 +82,15 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Houses");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 2,
                             Location = "Manisa/Akhisar",
                             Price = 4000m,
                             Type = "Ege bungalov"
@@ -92,6 +98,7 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 2,
+                            CategoryId = 2,
                             Location = "Ordu/Ünye",
                             Price = 3000m,
                             Type = "Karadeniz ahşap"
@@ -99,6 +106,7 @@ namespace WebApi.Migrations
                         new
                         {
                             Id = 3,
+                            CategoryId = 3,
                             Location = "Konya/Ilgın",
                             Price = 2000m,
                             Type = "İçanadolu kerpiç"
@@ -211,22 +219,22 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5b301d37-28da-46c8-9588-1a7ccc6c6069",
-                            ConcurrencyStamp = "3d636b94-9463-4030-887b-e1241156b777",
+                            Id = "267d5e85-6277-43e1-bca3-fe6458374223",
+                            ConcurrencyStamp = "451cf6b4-c2f3-457b-a7fd-69e3fee148e8",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "42c1889b-3e9c-4f9b-bf4d-e846e1bbe41c",
-                            ConcurrencyStamp = "141a806b-ebbb-43d7-a912-603c10efbb90",
+                            Id = "7554f81d-0a93-4d2c-88f9-d55893b05ca4",
+                            ConcurrencyStamp = "3aa3adf3-4a36-4144-bd80-d8119ce468b8",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "d6c87cf6-c566-414a-86b6-4442cf761246",
-                            ConcurrencyStamp = "ad8a7167-e7fd-4b13-856c-f6961994c385",
+                            Id = "09575e2b-a562-4ed1-841a-a79e36c7b096",
+                            ConcurrencyStamp = "777bfb48-6a26-484e-b7b4-a8555b73a9b0",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -336,6 +344,17 @@ namespace WebApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Models.House", b =>
+                {
+                    b.HasOne("Entities.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

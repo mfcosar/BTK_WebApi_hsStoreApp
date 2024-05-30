@@ -21,5 +21,7 @@ namespace Entities.DataTransferObjects
         public decimal Price { get; init; }
 
         public String Location { get; init; }
+
+        public int CategoryId { get; init; }
     }
 }

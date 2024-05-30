@@ -53,18 +53,16 @@ namespace WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Houses",
+                name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Houses", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,25 +171,62 @@ namespace WebApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Houses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Houses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Houses_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "5a1bf44b-4d00-4018-90aa-9cc901ef01f6", "c3f53987-0bb5-4f90-a03f-1310732db227", "Editor", "EDITOR" },
-                    { "5bfd02d4-ce32-47df-a8f9-249d2d457bc8", "717cb884-d454-4f56-bc79-212f4c67b926", "User", "USER" },
-                    { "71dba109-85b7-4c54-8199-e7135b6dc462", "d19cf611-a499-4a6e-a00e-a42eed74a4b2", "Admin", "ADMIN" }
+                    { "09575e2b-a562-4ed1-841a-a79e36c7b096", "777bfb48-6a26-484e-b7b4-a8555b73a9b0", "Admin", "ADMIN" },
+                    { "267d5e85-6277-43e1-bca3-fe6458374223", "451cf6b4-c2f3-457b-a7fd-69e3fee148e8", "User", "USER" },
+                    { "7554f81d-0a93-4d2c-88f9-d55893b05ca4", "3aa3adf3-4a36-4144-bd80-d8119ce468b8", "Editor", "EDITOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "CategoryName" },
+                values: new object[,]
+                {
+                    { 1, "Müstakil" },
+                    { 2, "Bahçeli" },
+                    { 3, "Apartman dairesi" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Houses",
-                columns: new[] { "Id", "Location", "Price", "Type" },
-                values: new object[,]
-                {
-                    { 1, "Manisa/Akhisar", 4000m, "Ege bungalov" },
-                    { 2, "Ordu/Ünye", 3000m, "Karadeniz ahşap" },
-                    { 3, "Konya/Ilgın", 2000m, "İçanadolu kerpiç" }
-                });
+                columns: new[] { "Id", "CategoryId", "Location", "Price", "Type" },
+                values: new object[] { 1, 2, "Manisa/Akhisar", 4000m, "Ege bungalov" });
+
+            migrationBuilder.InsertData(
+                table: "Houses",
+                columns: new[] { "Id", "CategoryId", "Location", "Price", "Type" },
+                values: new object[] { 2, 2, "Ordu/Ünye", 3000m, "Karadeniz ahşap" });
+
+            migrationBuilder.InsertData(
+                table: "Houses",
+                columns: new[] { "Id", "CategoryId", "Location", "Price", "Type" },
+                values: new object[] { 3, 3, "Konya/Ilgın", 2000m, "İçanadolu kerpiç" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -231,6 +266,11 @@ namespace WebApi.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Houses_CategoryId",
+                table: "Houses",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -258,6 +298,9 @@ namespace WebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

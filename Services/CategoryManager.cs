@@ -22,14 +22,18 @@ namespace Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)
+        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync(bool trackChanges)
         {
-            return await _repositoryManager.CategoryRepo.GetAllCategoriesAsync(trackChanges);
+            var categories = await _repositoryManager.CategoryRepo.GetAllCategoriesAsync(trackChanges);
+            var categoriesDtoMapped = _mapper.Map< IEnumerable<CategoryDto>>(categories);
+            return categoriesDtoMapped;
         }
 
-        public async Task<Category> GetOneCategoryByIdAsync(int id, bool trackChanges)
+        public async Task<CategoryDto> GetOneCategoryByIdAsync(int id, bool trackChanges)
         {
-            return await _repositoryManager.CategoryRepo.GetOneCategoryByIdAsync(id, trackChanges);
+            var category = await GetOneCategoryByIdAndCheckExists(id, trackChanges);
+            var entity = _mapper.Map<CategoryDto>(category);
+            return entity;
         }
 
 

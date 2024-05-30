@@ -10,8 +10,8 @@ namespace Services.Contracts
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges);
-        Task<Category> GetOneCategoryByIdAsync(int id, bool trackChanges);
+        Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync(bool trackChanges);
+        Task<CategoryDto> GetOneCategoryByIdAsync(int id, bool trackChanges);
         
         Task<CategoryDto> FormOneCategoryAsync(CategoryDtoForInsertion categoryDtoForInsertion);
         Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDtoForUpdate, bool trackChanges);
